@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions , Session} from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import SpotifyProvider from "next-auth/providers/spotify"
 import spotifyApi, { LOGIN_URL } from '../../../lib/spotify'
 
