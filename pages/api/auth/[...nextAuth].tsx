@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, account, user }) {
-      // Initial sign in 
+      // Initial sign in. 
       if (account && user) {
         return {
           ...token,
