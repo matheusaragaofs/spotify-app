@@ -8,14 +8,16 @@ import {
     RssOutline
 
 } from 'heroicons-react'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 const Sidebar: React.FC = () => {
+    const { data: session, status } = useSession()
+    console.log('session:', session)
     return (
         <div className='text-gray-500 p-5 text-sm border-r border-gray-900'>
             <div className='space-y-4'>
-                <button onClick={()=> signOut()} 
-                 className='flex items-center  space-x-2 hover:text-white '>
+                <button onClick={() => signOut()}
+                    className='flex items-center  space-x-2 hover:text-white '>
                     <p>Logout</p>
                 </button>
                 <button className='flex items-center  space-x-2 hover:text-white '>
@@ -49,7 +51,7 @@ const Sidebar: React.FC = () => {
                 <p className='cursor-pointer hover:text-white'>Playlist Name</p>
                 <p className='cursor-pointer hover:text-white'>Playlist Name</p>
                 <p className='cursor-pointer hover:text-white'>Playlist Name</p>
-             
+
             </div>
         </div>
 

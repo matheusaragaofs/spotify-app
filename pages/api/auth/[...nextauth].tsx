@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
-  secret: process.env.JWT_SECREET,
+  secret: process.env.JWT_SECRET,
   pages: {
     signIn: '/login'
   },
