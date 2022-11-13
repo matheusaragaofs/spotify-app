@@ -7,35 +7,34 @@ interface IColors  {
   profile_btn: string;
 }
 
-const profileBtnIntensity = '300' 
 const colors: IColors[] = [
    {
     gradient_bg: 'from-indigo-500',
-    profile_btn: `bg-indigo-${profileBtnIntensity}`
+    profile_btn: `bg-indigo-300`
   },
    {
     gradient_bg: 'from-blue-500',
-    profile_btn: `bg-blue-${profileBtnIntensity}`
+    profile_btn: `bg-blue-300`
   },
    {
     gradient_bg: 'from-green-500',
-    profile_btn: `bg-green-${profileBtnIntensity}`
+    profile_btn: `bg-green-300`
   },
    {
     gradient_bg: 'from-red-500',
-    profile_btn: `bg-red-${profileBtnIntensity}`
+    profile_btn: `bg-red-300`
   },
    {
     gradient_bg: 'from-yellow-500',
-    profile_btn: `bg-yellow-${profileBtnIntensity}`
+    profile_btn: `bg-yellow-300`
   },
    {
     gradient_bg: 'from-pink-500',
-    profile_btn: `bg-pink-${profileBtnIntensity}`
+    profile_btn: `bg-pink-300`
   },
    {
     gradient_bg: 'from-purple-500',
-    profile_btn: `bg-purple-${profileBtnIntensity}`
+    profile_btn: `bg-purple-300`
   },
 ]
 

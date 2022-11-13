@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     HomeOutline,
     HeartOutline,
@@ -9,12 +9,64 @@ import {
 
 } from 'heroicons-react'
 import { signOut, useSession } from 'next-auth/react'
+import useSpotify from '../hooks/useSpotify'
+interface Playlist {
+    collaborative: boolean;
+    description: string;
+    external_urls: {
+        spotify: string;
+    };
+    href: string;
+    id: string;
+    images: {
+        height?: any;
+        url: string;
+        width?: any;
+    }[];
+    name: string;
+    owner: {
+        display_name: string;
+        external_urls: {
+            spotify: string;
+        };
+        href: string;
+        id: string;
+        type: string;
+        uri: string;
+    };
+    primary_color?: any;
+    public: boolean;
+    snapshot_id: string;
+    tracks: {
+        href: string;
+        total: number;
+    };
+    type: string;
+    uri: string;
+}
+
+
 
 const Sidebar: React.FC = () => {
-    const { data: session, status } = useSession()
-    console.log('session:', session)
+    const { data: session } = useSession()
+
+
+    const spotifyApi = useSpotify()
+    const [playlists, setPlaylists] = useState([] as any)
+    const [platlistId, setPlaylistId] = useState<null | string>(null)
+    console.log('platlistId:', platlistId)
+    useEffect(() => {
+        if (spotifyApi.getAccessToken()) {
+            const getPlaylists = async () => {
+                const { body: { items } } = await spotifyApi.getUserPlaylists()
+                setPlaylists(items)
+            }
+            getPlaylists()
+        }
+    }, [session, spotifyApi])
+
     return (
-        <div className='text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll  scrollbar-hide h-screen'>
+        <div className='text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll  scrollbar-hide h-screen w-1/5'>
             <div className='space-y-4'>
                 <button onClick={() => signOut()}
                     className='flex items-center  space-x-2 hover:text-white '>
@@ -47,10 +99,10 @@ const Sidebar: React.FC = () => {
                 </button>
                 <hr className='border-t-[0.1px] border-gray-900' />
                 {/* Playlist */}
-                <p className='cursor-pointer hover:text-white'>Playlist Name</p>
-                <p className='cursor-pointer hover:text-white'>Playlist Name</p>
-                <p className='cursor-pointer hover:text-white'>Playlist Name</p>
-                <p className='cursor-pointer hover:text-white'>Playlist Name</p>
+                {playlists?.map((playlist: Playlist) => {
+                    return <p onClick={() => setPlaylistId(playlist?.id)} key={playlist?.id} className='cursor-pointer hover:text-white truncate'>{playlist?.name}</p>
+
+                })}
 
             </div>
         </div>

@@ -7,12 +7,13 @@ declare module "next-auth" {
   interface Session {
     expires: any;
     user: {
-        accessToken:  any
-        refreshToken: any
-        username: any,
-        name: any;
-        email: any
-        image?: any
+      accessToken:  any
+      refreshToken: any
+      username: any,
+      name: any;
+      email: any
+      image?: any
     }
+    error: any;
   }
 }
