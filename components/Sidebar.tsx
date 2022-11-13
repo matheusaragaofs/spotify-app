@@ -10,58 +10,26 @@ import {
 } from 'heroicons-react'
 import { signOut, useSession } from 'next-auth/react'
 import useSpotify from '../hooks/useSpotify'
-interface Playlist {
-    collaborative: boolean;
-    description: string;
-    external_urls: {
-        spotify: string;
-    };
-    href: string;
-    id: string;
-    images: {
-        height?: any;
-        url: string;
-        width?: any;
-    }[];
-    name: string;
-    owner: {
-        display_name: string;
-        external_urls: {
-            spotify: string;
-        };
-        href: string;
-        id: string;
-        type: string;
-        uri: string;
-    };
-    primary_color?: any;
-    public: boolean;
-    snapshot_id: string;
-    tracks: {
-        href: string;
-        total: number;
-    };
-    type: string;
-    uri: string;
-}
-
-
+import { useRecoilState } from 'recoil'
+import { playlistIdState } from '../atoms/playlistAtom'
 
 const Sidebar: React.FC = () => {
     const { data: session } = useSession()
 
-
     const spotifyApi = useSpotify()
-    const [playlists, setPlaylists] = useState([] as any)
-    const [platlistId, setPlaylistId] = useState<null | string>(null)
-    console.log('platlistId:', platlistId)
+    const [playlists, setPlaylists] = useState([] as SpotifyApi.PlaylistObjectSimplified[])
+    const [platlistId, setPlaylistId] = useRecoilState(playlistIdState)
     useEffect(() => {
         if (spotifyApi.getAccessToken()) {
-            const getPlaylists = async () => {
-                const { body: { items } } = await spotifyApi.getUserPlaylists()
-                setPlaylists(items)
+            try {
+                const getPlaylists = async () => {
+                    const { body: { items } } = await spotifyApi.getUserPlaylists()
+                    setPlaylists(items)
+                }
+                getPlaylists()
+            } catch (error) {
+                console.log('error:', error)
             }
-            getPlaylists()
         }
     }, [session, spotifyApi])
 
@@ -99,7 +67,7 @@ const Sidebar: React.FC = () => {
                 </button>
                 <hr className='border-t-[0.1px] border-gray-900' />
                 {/* Playlist */}
-                {playlists?.map((playlist: Playlist) => {
+                {playlists?.map((playlist) => {
                     return <p onClick={() => setPlaylistId(playlist?.id)} key={playlist?.id} className='cursor-pointer hover:text-white truncate'>{playlist?.name}</p>
 
                 })}
