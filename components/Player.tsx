@@ -52,7 +52,7 @@ const Player: React.FC = () => {
 
     const debouncedAdjustVolume = useCallback(
         debounce((volume: number) => {
-            spotifyApi.setVolume(volume)
+            spotifyApi.setVolume(volume).catch((err) => {})
         }, 500)
         , [])
 
@@ -68,12 +68,11 @@ const Player: React.FC = () => {
             }
         })
     }
-
+    if (!currentTrackId) return null
     return (
-        <div className='h-24
-        //todo make this bg-gradient via atoms
-         bg-gradient-to-r from-slate-900 via-pink-900 to-slate-900 
-         text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8'>
+        <div className={`h-24 rounded-t-2xl
+        backdrop-blur-lg bg-white/10
+         text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8`}>
             {/* Left */}
             <div className='flex items-center space-x-4'>
                 <img className="hidden md:inline h-10 w-10" src={songInfo?.album.images?.[0]?.url} alt="" />
