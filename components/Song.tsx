@@ -13,11 +13,13 @@ const Song: React.FC<SongProps> = ({ track, order }) => {
     const [currentTrackId, setCurrentTrackId] = useRecoilState(currentTrackIdState)
     const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState)
     const playSong = () => {
-        setCurrentTrackId(track?.id as string)
-        setIsPlaying(true)
         spotifyApi.play({
             uris: [track?.uri as string] //uri = uniform resource indentifier
+        }).then(() => {
+            setCurrentTrackId(track?.id as string)
+            setIsPlaying(true)
         })
+        .catch((err) => alert('Please open a spotify app, no device found\n' + err?.message))
     }
     return (
         <div
@@ -25,7 +27,7 @@ const Song: React.FC<SongProps> = ({ track, order }) => {
         className="grid grid-cols-2 text-gray-500 py-4 px-5 hover:bg-gray-900 rounded-lg cursor-pointer">
             <div className='flex items-center space-x-4 '>
                 <p>{order + 1}</p>
-                <img className='w-10 h-10' src={track?.album.images[0].url} alt="" />
+                <img className='w-10 h-10' src={track?.album?.images[0]?.url} alt="" />
                 <div>
                     <p className='w-36 text-white lg:w-64 truncate'>{track?.name}</p >
                     <p className='w-40'>{track?.artists[0].name}</p >
