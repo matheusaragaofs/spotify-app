@@ -6,28 +6,10 @@ import { useRecoilValue, useRecoilState } from 'recoil'
 import useSpotify from '../hooks/useSpotify';
 import Songs from './Songs';
 
-
-const colors: String[] = [
-  'indigo',
-  'blue',
-  'green',
-  'red',
-  'yellow',
-  'pink',
-  'purple',
-]
-
 const Center: React.FC = () => {
   const platlistId = useRecoilValue(playlistIdState)
   const [playlist, setPlaylist] = useRecoilState(playlistState)
   const spotifyApi = useSpotify()
-  const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
-  const [configColors, setConfigColors] = useState('green')
-
-  useEffect(() => {
-    const randomColorIndex = random(0, colors.length - 1)
-    setConfigColors(colors[randomColorIndex] as string)
-  }, [platlistId])
 
   useEffect(() => {
     spotifyApi.getPlaylist(platlistId).then((data) => {
@@ -40,7 +22,7 @@ const Center: React.FC = () => {
   const { data: session } = useSession()
   return (
     <div className='flex-grow h-screen overflow-y-scroll scrollbar-hide'>
-      <header className='absolute right-8 top-5'>
+      <header className='absolute right-8 top-5 z-10'>
         <div className={`flex items-center space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2  bg-white/10 text-white backdrop-blur-lg `} onClick={() => signOut()}>
           <img className="rounded-full w-10 h-10" src={session?.user?.image} alt="image" />
           <h2 className='max-w-[140px] truncate'>{session?.user.name}</h2>
@@ -48,7 +30,7 @@ const Center: React.FC = () => {
         </div>
       </header>
 
-      <section className={`flex items-end space-x-7 bg-gradient-to-b  to-black from-${configColors}-500 h-80 text-white p-8`}>
+      <section className={`flex items-end space-x-7 bg-gradient-to-r from-green-900 via-green-500 to-slate-900  backdrop-blur-sm h-80 text-white p-8`}>
         {playlist?.images?.[0]?.url && <img className="h-44 w-44 shadow-2xl" src={playlist?.images?.[0]?.url} alt="" />}
         <div>
           <p>PLAYLIST</p>
