@@ -10,6 +10,24 @@ const Center: React.FC = () => {
   const platlistId = useRecoilValue(playlistIdState)
   const [playlist, setPlaylist] = useRecoilState(playlistState)
   const spotifyApi = useSpotify()
+  const colors = [
+    { from: "#48ec63", to: "#019CAD" },
+    { from: "#4DA0B0", to: "#D39D38" },
+    { from: "#5614B0", to: "#DBD65C" },
+    { from: "#114357", to: "#F29492" },
+    { from: "#2ce47f", to: "#1e293b" },
+    { from: "#c2e59c", to: "#64b3f4" },
+    { from: "#8E0E00", to: "#1F1C18" },
+    { from: "#fc00ff", to: "#00dbde" },
+    { from: "#7b4397", to: "#dc2430" },
+  ]
+  const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
+  const [configColors, setConfigColors] = useState(colors[0])
+
+  useEffect(() => {
+    const randomColorIndex = random(0, colors.length - 1)
+    setConfigColors(colors[randomColorIndex] as any)
+  }, [platlistId])
 
   useEffect(() => {
     spotifyApi.getPlaylist(platlistId).then((data) => {
@@ -30,7 +48,10 @@ const Center: React.FC = () => {
         </div>
       </header>
 
-      <section className={`flex items-end space-x-7 bg-gradient-to-r from-green-900 via-green-500 to-slate-900  backdrop-blur-sm h-80 text-white p-8`}>
+
+      <section
+        style={{ backgroundImage: `linear-gradient(to right, ${configColors.from}, ${configColors.to})` }}
+        className={`flex items-end space-x-7 backdrop-blur-sm h-80 text-white p-8`}>
         {playlist?.images?.[0]?.url && <img className="h-44 w-44 shadow-2xl" src={playlist?.images?.[0]?.url} alt="" />}
         <div>
           <p>PLAYLIST</p>
