@@ -52,20 +52,22 @@ const Player: React.FC = () => {
 
     const debouncedAdjustVolume = useCallback(
         debounce((volume: number) => {
-            spotifyApi.setVolume(volume).catch((err) => {})
+            spotifyApi.setVolume(volume).catch((err) => { })
         }, 500)
         , [])
 
 
     const handlePlayPause = () => {
         spotifyApi.getMyCurrentPlaybackState().then((data) => {
-            if (data.body.is_playing) {
+            if (data?.body?.is_playing) {
                 spotifyApi.pause()
                 setIsPlaying(false)
             } else {
                 spotifyApi.play()
                 setIsPlaying(true)
             }
+        }).catch((err) => {
+            alert('Please open a spotify app, no device found\n' + err?.message)
         })
     }
     if (!currentTrackId) return null
